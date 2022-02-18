@@ -1,0 +1,46 @@
+* {
+    -fx-font-family: "Roboto Thin", Roboto;
+    -fx-outline: transparent;
+}
+
+#root {
+    -fx-background-color: #1C1C1C;
+}
+
+#label {
+    -fx-font-size: 48px;
+    -fx-text-fill: white;
+}
+
+.button {
+    -fx-font-size: 32px;
+    -fx-background-color: #505050;
+    -fx-text-fill: white;
+
+    -fx-border-radius: 50%;
+    -fx-background-radius: 50%;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-opacity: 0.9;
+}
+
+.button:pressed {
+    -fx-opacity: 0.7;
+}
+
+#button-0, #button-1, #button-2 {
+    -fx-background-color: #D4D4D2;
+    -fx-text-fill: black;
+}
+
+#button-3, #button-7, #button-11, #button-15, #button-19 {
+    -fx-background-color: #FF9500;
+    -fx-text-fill: white;
+}
+
+#button-16 {
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
+}
