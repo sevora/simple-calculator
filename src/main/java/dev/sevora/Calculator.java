@@ -1,38 +1,47 @@
 package dev.sevora;
 
+/**
+ * The simple calculator for the application.
+ * @author Ralph Louis Gopez
+ */
 public class Calculator {
-    String left = "";
-    String right = "";
-    String operation = "";
+    private String left = "";
+    private String right = "";
+    private String operation = "";
 
-    String previousRight = "";
-    String previousOperation = "";
+    private String previousRight = "";
+    private String previousOperation = "";
 
-    static String NUMBERS = "0123456789";
-    static String OPERATIONS = "+-x÷";
-    static String SPECIAL = "AC C % +/- .";
+    public static String NUMBERS = "0123456789";
+    public static String OPERATIONS = "+-x÷";
+    public static String SPECIAL = "AC C % +/- .";
 
-    public Calculator() {
-
-    }
-
-    // used to punch a key on the calculator
+    /**
+     * Main function to use the calculator, you can think of it as actually using a 
+     * calculator in the real world where you only press a single button to activate an instruction
+     * @param entry String of a single command check out the static definitions above.
+     */
     public void punch(String entry) {
-        if (Calculator.NUMBERS.indexOf(entry) != -1) {
-            String number = getNumberAtSide();
-            number += entry;
-            setNumberAtSide(number);
+        // This whole if-else if block figures out the right function call for the instruction
+        if (Calculator.NUMBERS.indexOf(entry) != -1) { 
+            String number = getNumberAtSide(); // Case 1:
+            number += entry;                   // The input is just a digit thus we just
+            setNumberAtSide(number);           // append it to our current entry.
         } else if (Calculator.OPERATIONS.indexOf(entry) != -1) {
-            setOperation(entry);
-            clearHistory();
+            setOperation(entry);               // Case 2:
+            clearHistory();                    // The input is a basic standard operation.
         } else if (Calculator.SPECIAL.contains(entry)) {
-            evaluateSpecialOperation(entry);
+            evaluateSpecialOperation(entry);   // Case 3: The input is a special operation.
         } else if ( entry.equals("=") ) {
-            evaluate();
+            evaluate();                        // Case 4: We are to evaluate the inputs
         }
     }
 
-    // used to get the display of the calculator
+    /**
+     * Use to get the current text of the display.
+     * @return String that is basically the text that should appear if
+     * the calculator had a display.
+     */
     public String display() {
         if (left.length() == 0) {
             return "0";
@@ -42,18 +51,22 @@ public class Calculator {
         return right;
     }
 
-    // removes trailing zeroes (after decimal) and decimal point if those are all 0s
-    // so for example:
-    // 0.1025 -> 0.1025
-    // 0.1300 -> 0.13
-    // 50-> 50
-    // 50.00 -> 50
-    private String formatStringNumber(String number) {
+    /**
+     * Use to format a String number and remove unnecessary digits, usually trailing zeroes.
+     * @param number This is a string that only has numbers in it, can 
+     * have the decimal point or not.
+     * @return String that is formatted as a number properly, removing unnecessary
+     * trailing zeroes if there are any.
+     */
+    protected String formatStringNumber(String number) {
         String result = number;
         int decimalIndex = number.indexOf(".");
         if (decimalIndex == -1) return result;
         int safeIndex = result.length();
 
+        // This is a smart algorithm, it reads the string in reverse and
+        // when it hits a non-zero value it could determine already what part
+        // needs to be preserved or not.
         for (int index = number.length() - 1; index >= decimalIndex; --index) {
             if ( !(number.charAt(index) == '0') || (number.charAt(index) == '.') ) {
                 if (index == decimalIndex) {
@@ -68,7 +81,12 @@ public class Calculator {
         return result.substring(0, safeIndex);
     }
 
-    // used to get which side is active: left or right
+    /**
+     * Use to figure out which String number should be modified at this point
+     * according to the current state.
+     * @return String that says whether the left side or right side of the 
+     * expression to be evaluated should be modified.
+     */
     private String getSide() {
         if (operation.length() > 0) {
             return "right";
@@ -76,13 +94,19 @@ public class Calculator {
         return "left";
     }
 
-    // used to get number on active side
+    /**
+     * This returns the value of the current String number that should be modified.
+     * @return A String with just numbers in it.
+     */
     private String getNumberAtSide() {
         if (getSide() == "left") return left;
         return right;
     }
 
-    // used to set number on active side
+    /**
+     * Use to set the number that should be modified.
+     * @param number String that consists of numerical values only.
+     */
     private void setNumberAtSide(String number) {
         if (getSide() == "left") {
             left = number;
@@ -91,10 +115,20 @@ public class Calculator {
         }
     }
 
+    /**
+     * This just sets the current operation.
+     * @param operation String that should match one of values from the
+     * static operation variable.
+     */
     private void setOperation(String operation) {
         this.operation = operation;
     }
 
+    /**
+     * This just evaluates the current expression. This part mainly adds
+     * storing and using the history to allow using the same operation 
+     * without repeating what was input.
+     */
     private void evaluate() {
         if (this.previousRight.length() > 0 && this.previousOperation.length() > 0) {
             this.right = this.previousRight;
@@ -103,6 +137,10 @@ public class Calculator {
         evaluateOnce();
     }
 
+    /**
+     * This is used to evaluate the answer. It then stores the answer on the left side
+     * and clears both the operation and the right side.
+     */
     private void evaluateOnce() {
         if (this.left.length() > 0 && this.right.length() > 0 && this.operation.length() > 0) {
             double left = Double.parseDouble(this.left);
@@ -126,6 +164,7 @@ public class Calculator {
 
             this.left = formatStringNumber(String.valueOf(result));
             
+            // This is useful for repeating the same operation without having to input it.
             this.previousRight = this.right;
             this.previousOperation = this.operation;
 
@@ -134,11 +173,21 @@ public class Calculator {
         }   
     }
 
+    /**
+     * Use to clear the previous operation state
+     * to allow a different operation.
+     */
     private void clearHistory() {
         this.previousRight = "";
         this.previousOperation = "";
     }
-    
+
+    /**
+     * Use to evaluate a special operation, to support extra features on 
+     * the calculator.
+     * @param operation String of a single special
+     * command check out the static definitions above. 
+     */
     private void evaluateSpecialOperation(String operation) {
         switch (operation) {
             case "AC":
@@ -159,12 +208,21 @@ public class Calculator {
         }
     }
 
+    /**
+     * Use to clear the whole state
+     * of the calculator.
+     */
     public void clear() {
         this.left = "";
         this.right = "";
         this.operation = "";
     }
 
+    /**
+     * Use to remove a single numerical value from the calculator,
+     * this is literally backspace but it has some extra instruction
+     * to remove the decimal point if a number next to it is being removed.
+     */
     public void backspace() {
         String number = getNumberAtSide().length() > 0 ? getNumberAtSide() : "0";
 
@@ -178,6 +236,9 @@ public class Calculator {
         setNumberAtSide(number);
     }
 
+    /**
+     * Use to convert the number to a decimal, just literally adds the decimal point.
+     */
     public void toggleDecimalPoint() {
         String number = getNumberAtSide().length() > 0 ? getNumberAtSide() : "0";
 
@@ -187,6 +248,9 @@ public class Calculator {
         
     }
 
+    /**
+     * Use to change the sign of the number, just multiplies -1 on the current value.
+     */
     public void toggleSign() {
         String number = getNumberAtSide().length() > 0 ? getNumberAtSide() : "0";
 
@@ -197,6 +261,9 @@ public class Calculator {
         }
     }
 
+    /**
+     * Use to convert the number to a rate, it literally just divides the current number by 100.
+     */
     public void toggleRate() {
         String number = getNumberAtSide().length() > 0 ? getNumberAtSide() : "0";
 

@@ -1,3 +1,7 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.project.exportJar.targetPath":"${workspaceFolder}/dist/${workspaceFolderBasename}.jar",
+    "java.project.referencedLibraries": [
+        "/usr/share/openjfx/lib/*.jar"
+    ]
 }
