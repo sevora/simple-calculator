@@ -12,6 +12,8 @@ public class Calculator {
     private String previousRight = "";
     private String previousOperation = "";
 
+    private boolean hasError = false;
+
     public static String NUMBERS = "0123456789";
     public static String OPERATIONS = "+-x÷";
     public static String SPECIAL = "AC C % +/- .";
@@ -22,18 +24,31 @@ public class Calculator {
      * @param entry String of a single command check out the static definitions above.
      */
     public void punch(String entry) {
+        // This allows us to handle the division by zero error
+        if (hasError) {
+            this.clear();
+            hasError = false;
+        }
+
         // This whole if-else if block figures out the right function call for the instruction
         if (Calculator.NUMBERS.indexOf(entry) != -1) { 
-            String number = getNumberAtSide(); // Case 1:
-            number += entry;                   // The input is just a digit thus we just
-            setNumberAtSide(number);           // append it to our current entry.
+            String number = getNumberAtSide();
+            
+            // This prevents 0 from being added if 0 is the only input
+            if (number.length() == 1 && number.equals("0")) {
+                setNumberAtSide("");
+            } 
+
+            number = getNumberAtSide() + entry;                  
+            setNumberAtSide(number);
+            
         } else if (Calculator.OPERATIONS.indexOf(entry) != -1) {
-            setOperation(entry);               // Case 2:
-            clearHistory();                    // The input is a basic standard operation.
+            setOperation(entry);               
+            clearHistory();                    
         } else if (Calculator.SPECIAL.contains(entry)) {
-            evaluateSpecialOperation(entry);   // Case 3: The input is a special operation.
+            evaluateSpecialOperation(entry);   
         } else if ( entry.equals("=") ) {
-            evaluate();                        // Case 4: We are to evaluate the inputs
+            evaluate();                        
         }
     }
 
@@ -158,12 +173,20 @@ public class Calculator {
                     result = left * right;
                     break;
                 case "÷":
-                    result = left / right;
+                    if (right == 0) {
+                        hasError = true;
+                    } else {
+                        result = left / right;
+                    }
                     break;
             }
 
-            this.left = formatStringNumber(String.valueOf(result));
-            
+            if (hasError) {
+                this.left = "Error";
+            } else {
+                this.left = formatStringNumber(String.valueOf(result));
+            }
+
             // This is useful for repeating the same operation without having to input it.
             this.previousRight = this.right;
             this.previousOperation = this.operation;
