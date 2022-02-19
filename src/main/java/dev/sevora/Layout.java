@@ -7,7 +7,6 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.text.Font;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -18,13 +17,13 @@ public class Layout {
     private Button[] buttons = new Button[20];
     private String[] buttonKeys = {
         "AC", "+/-", "%", "÷",
-        "7", "8", "9", "×",
+        "7", "8", "9", "x",
         "4", "5", "6", "-",
         "1", "2", "3", "+",
         "0", "", ".", "="
     };
 
-    public Layout(int width, int height) {
+    Layout(int width, int height) {
         gridPane = createGridPaneOfSize(4, 6);
         gridPane.setId("root");
         gridPane.setPrefSize(width, height);
@@ -33,7 +32,7 @@ public class Layout {
         gridPane.setPadding(new Insets(10, 10, 10, 10));
 
         //
-        label = new Label("Hello World");
+        label = new Label("0");
         label.setId("label");
         label.setMaxWidth(Double.MAX_VALUE);
         label.setMaxHeight(Double.MAX_VALUE);
@@ -80,7 +79,6 @@ public class Layout {
                 Button button = buttons[index];
                 button.setId(String.format("button-%d", index));
                 button.getStyleClass().add("button");
-                System.out.println(button.getId());
 
                 // maximizes the size of each grid for the buttons
                 GridPane.setHgrow(button, Priority.ALWAYS);
@@ -98,6 +96,14 @@ public class Layout {
 
             }
         }
+    }
+
+    public Label getLabel() {
+        return label;
+    }
+
+    public Button[] getButtons() {
+        return buttons;
     }
 
     public Scene getScene() {
