@@ -1,4 +1,4 @@
-package dev.sevora;
+package dev.sevora.simplecalculator;
 
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;

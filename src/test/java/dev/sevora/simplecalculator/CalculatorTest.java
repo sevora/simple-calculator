@@ -1,4 +1,4 @@
-package dev.sevora;
+package dev.sevora.simplecalculator;
 
 import static org.junit.Assert.assertTrue;
 

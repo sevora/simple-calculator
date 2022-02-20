@@ -1,4 +1,4 @@
-package dev.sevora;
+package dev.sevora.simplecalculator;
 
 /**
  * The simple calculator for the application.

@@ -1,4 +1,4 @@
-package dev.sevora;
+package dev.sevora.simplecalculator;
 
 import java.util.Map;
 import static java.util.Map.entry;

@@ -1,4 +1,4 @@
-package dev.sevora;
+package dev.sevora.simplecalculator;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;

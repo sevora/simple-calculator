@@ -1,4 +1,4 @@
-package dev.sevora;
+package dev.sevora.simplecalculator;
 
 /**
  * Runs the application, I needed a class without "extends Application" as the main class
