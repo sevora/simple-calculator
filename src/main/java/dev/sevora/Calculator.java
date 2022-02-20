@@ -157,7 +157,9 @@ public class Calculator {
      * and clears both the operation and the right side.
      */
     private void evaluateOnce() {
-        if (this.left.length() > 0 && this.right.length() > 0 && this.operation.length() > 0) {
+        boolean hasE = (this.left.endsWith("E") || this.right.endsWith("E"));
+
+        if (!hasE && this.left.length() > 0 && this.right.length() > 0 && this.operation.length() > 0) {
             double left = Double.parseDouble(this.left);
             double right = Double.parseDouble(this.right);
             double result = 0.0;
@@ -249,7 +251,7 @@ public class Calculator {
     public void backspace() {
         String number = getNumberAtSide().length() > 0 ? getNumberAtSide() : "0";
 
-        if (number.length() > 0) {
+        if (!number.equals("0")) {
             number = number.substring(0, number.length() - 1);
             if (number.length() > 1 && number.charAt(number.length() - 1) == '.') {
                 number = number.substring(0, number.length() - 1);

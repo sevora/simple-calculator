@@ -1,5 +1,6 @@
 package dev.sevora;
 
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -7,6 +8,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.util.Duration;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -19,7 +21,7 @@ public class Layout {
     private GridPane gridPane;
     private Scene scene;
     private Button[] buttons = new Button[20];
-    private String[] buttonKeys = { // Could make this static.
+    private static String[] BUTTON_KEYS = { // Could make this static.
         "AC", "+/-", "%", "÷",
         "7", "8", "9", "x",
         "4", "5", "6", "-",
@@ -100,8 +102,14 @@ public class Layout {
                 if (index == 17) continue;  // There's no 17th button.
                 if (index > 19) break loop; // Also index > 19 won't work since (y+1)
 
-                buttons[index] = new Button(buttonKeys[index]);
+                buttons[index] = new Button(Layout.BUTTON_KEYS[index]);
                 Button button = buttons[index];
+
+                button.setFocusTraversable(false); // prevents focusing by TAB
+                // This event handling makes it so that it doesn't focus on other nodes.
+                button.focusedProperty().addListener((observable, old, hasNew) -> { 
+                    if (hasNew) gridPane.requestFocus();
+                });
 
                 button.setId(String.format("button-%d", index)); // useful for CSS, selecting individually
                 button.getStyleClass().add("button");            // useful for CSS, selecting all buttons
@@ -146,6 +154,29 @@ public class Layout {
      */
     public Scene getScene() {
         return scene;
+    }
+
+    /**
+     * This makes it appear that a button is being pressed even if it is not,
+     * just does that programmatically.
+     * @param entry The string that signifies the text a button should have.
+     * @param milliseconds A double signifying how many milliseconds it should appear pressed.
+     */
+    public void simulateClickWithoutEvent(String entry, double milliseconds) {
+        for (Button button : buttons) {
+            if (button != null && button.getText().equals(entry)) {
+                PauseTransition pause = new PauseTransition(Duration.millis(milliseconds));
+
+                button.getStyleClass().add("pressed");
+
+                pause.setOnFinished(event -> {
+                    button.getStyleClass().remove("pressed");
+                });
+
+                pause.play();
+                break;
+            }
+        }
     }
 
 }

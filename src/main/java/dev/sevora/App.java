@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
@@ -14,7 +15,7 @@ public class App extends Application
 {
     private Calculator calculator = new Calculator(); // This is what is used for the functionality in terms of logic of the app.
     private Layout layout = new Layout(400, 600); // JavaFX Objects
-    
+
     /**
      * Launches the JavaFX application.
      * @param args
@@ -41,6 +42,8 @@ public class App extends Application
             }
         }
 
+        layout.getScene().addEventHandler(KeyEvent.KEY_PRESSED, event -> keyHandler(event));
+
         primaryStage.setTitle("Simple Calculator");
         primaryStage.setScene( layout.getScene() );
         primaryStage.setResizable(false);
@@ -53,11 +56,29 @@ public class App extends Application
      */
     public void buttonHandler(ActionEvent event) {
         Button button = (Button) event.getSource();
-        Calculator calculator = this.calculator;
         Label label = this.layout.getLabel();
 
         calculator.punch(button.getText());
         label.setText(calculator.display());
+    }
+
+    /**
+     * This handles the keyboard input for the application.
+     * @param event A JavaFX KeyEvent.
+     */
+    public void keyHandler(KeyEvent event) {
+        Label label = this.layout.getLabel();
+        String toPunch = Keybindings.getInstructionFromEvent(event);
+
+        if (toPunch.length() > 0) {
+            // I didn't make simulate click run the event and made it independent
+            // because there are non-existent buttons such as backspace in the layout
+            calculator.punch(toPunch);
+            this.layout.simulateClickWithoutEvent(toPunch, 200);
+        }
+
+        label.setText(calculator.display());
+        event.consume();
     }
 
 }
