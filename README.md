@@ -9,13 +9,14 @@ Just download the JAR file on the releases page of the repository and run it on 
 
 ## Features
 This calculator application has a simple working GUI.
+- Control with mouse or keyboard, whichever you fancy.
 - Basic operations such as addition, subtraction, multiplication, and division.
 - Clear all button which resets the calculator's state.
 - Sign button which changes the sign of the number positive to negative and vice-versa.
 - Rate button which changes the number to a rate.
 
 ## Possible Improvements
-Ofcourse, this application isn't perfect. Currently there is no keyboard input handling and thus, the experience doesn't feel too smooth. That could be a future feature.
+Currently the application doesn't limit the number of digits that can be entered, there may be issues that could arise because of that.
 
 ## Screenshot
 ![Screenshot of the App](extra/Screenshot.png)
