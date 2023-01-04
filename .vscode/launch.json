@@ -8,6 +8,13 @@
             "type": "java",
             "name": "Launch Main",
             "request": "launch",
+            "mainClass": "dev.sevora.simplecalculator.Main",
+            "projectName": "simple-calculator"
+        },
+        {
+            "type": "java",
+            "name": "Launch Main",
+            "request": "launch",
             "mainClass": "dev.sevora.Main",
             "projectName": "simple-calculator"
         },
