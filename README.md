@@ -1,4 +1,4 @@
-# Simple Calculator
+# Simple Calculator &middot; ![GitHub](https://img.shields.io/github/license/sevora/simple-calculator) ![GitHub repo size](https://img.shields.io/github/repo-size/sevora/simple-calculator)
 A simple calculator with the most basic of features made with Java 11 and JavaFX.
 
 ## Development
